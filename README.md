@@ -1,6 +1,7 @@
 ## genes_detective - a tool for working with nucleic acid sequences 🔎 ##
 **genes_detective** allows you to make various transformations with DNA and RNA, as well
 as filter fastq sequences according to specified parameters
+
 ![Alt текст](https://a.d-cd.net/DqAAAgEQDeA-960.jpg)
 
 

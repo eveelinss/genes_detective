@@ -36,72 +36,62 @@ transcribe_dict: dict = {
 }
 
 
-def check_rna_dna(seqs: tuple) -> list:
-    flags = []
-    for i in seqs:
-        if set(i) <= set("AGCTagct"):
-            flags.append("dna")
-        elif set(i) <= set("AGCUagcu"):
-            flags.append("rna")
-        else:
-            flags.append("not na")
-    return flags
+def check_na(seq: str) -> bool:
+    seq = set(seq)
+    if seq <= set("AGCTagct") or seq <= set("AGCUagcu"):
+        return True
+    return False
 
 
-def reverse(seqs: str, flags: str, seq_number: int) -> str:
-    if flags != "not na":
-        return seqs[::-1]
-    return f"the sequence №{seq_number} is not a nucleic acid"
+def check_rna(seq: str) -> bool:
+    seq = set(seq)
+    if seq <= set("AGCUagcu"):
+        return True
+    return False
 
 
-def complement(seqs: str, flags: str, seq_number: int) -> str:
-    if flags == "rna":
-        return "".join(complement_dict_for_rna[ch] for ch in seqs)
-    elif flags == "dna":
-        return "".join(complement_dict_for_dna[ch] for ch in seqs)
-    return f"the sequence №{seq_number} is not a nucleic acid"
+def reverse(seq: str) -> str:
+    return seq[::-1]
 
 
-def reverse_complement(seqs: str, flags: str, seq_number: int) -> str:
-    if flags != "not na":
-        seqs = reverse(seqs, flags, seq_number)
-        seqs = complement(seqs, flags, seq_number)
-        return seqs
-    return f"the sequence №{seq_number} is not a nucleic acid"
+def complement(seq: str) -> str:
+    if check_rna(seq):
+        return "".join(complement_dict_for_rna[ch] for ch in seq)
+    return "".join(complement_dict_for_dna[ch] for ch in seq)
 
 
-def transcribe(seqs: str, flags: str, seq_number: int) -> str:
-    if flags == "dna":
-        return "".join(transcribe_dict[ch] for ch in seqs)
-    elif flags == "rna":
-        return f"the sequence №{seq_number} is rna"
-    return f"the sequence №{seq_number} is not a nucleic acid"
+def reverse_complement(seq: str) -> str:
+    seq = reverse(seq)
+    seq = complement(seq)
+    return seq
 
 
-def search_start_codon_in_rna(seqs: str, flags: str, seq_number: int) -> str:
-    if flags == "rna":
-        if "aug" in seqs.lower():
-            start = seqs.lower().find("aug")
-            return f"in sequense №{seq_number} the start codon starts with the {start + 1} character"
-        return f"in sequense №{seq_number} no start codon"
-    elif flags == "dna":
-        return f"the sequense №{seq_number} is dna"
-    return f"the sequence №{seq_number} is not a nucleic acid"
+def transcribe(seq: str) -> str:
+    if not check_rna(seq):
+        return "".join(transcribe_dict[ch] for ch in seq)
+    return "the sequence is rna"
 
 
-def search_first_stop_codon_in_rna(seqs: str, flags: str, seq_number: int) -> str:
+def search_start_codon_in_rna(seq: str) -> int | str:
+    if check_rna(seq):
+        if "aug" in seq.lower():
+            start = seq.lower().find("aug")
+            return start + 1
+        return "no start codon"
+    return "dna"
+
+
+def search_first_stop_codon_in_rna(seq: str) -> int | str:
     idx = []
-    if flags == "rna":
+    if check_rna(seq):
         for cdn in ("uga", "uaa", "uag"):
-            idx_cdn = seqs.lower().find(cdn)
+            idx_cdn = seq.lower().find(cdn)
             if idx_cdn != -1:
                 idx.append(idx_cdn)
         if len(idx) != 0:
-            return f"in sequense №{seq_number} the first stop codon starts with the {min(idx) + 1} character"
-        return f"in sequense №{seq_number} no stop codon"
-    elif flags == "dna":
-        return f"the sequense №{seq_number} is dna"
-    return f"the sequense №{seq_number} is not a nucleic acid"
+            return min(idx) + 1
+        return "no stop codon"
+    return "dna"
 
 
 fn_map: dict = {

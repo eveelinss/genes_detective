@@ -2,7 +2,6 @@
 Contains auxiliary functions for filter_fastq
 """
 
-
 import os
 
 
@@ -26,7 +25,7 @@ def is_bounded(bounds: tuple[float | int], x: float) -> bool:
 def create_filtered_directory_and_file(output_file: str) -> str:
     current_dir = os.path.dirname(os.path.abspath(__file__))
     parent_dir = os.path.dirname(current_dir)
-    filtered_dir = os.path.join(parent_dir, 'filtered')
+    filtered_dir = os.path.join(parent_dir, "filtered")
     if not os.path.exists(filtered_dir):
         os.makedirs(filtered_dir)
     output_file = os.path.join(filtered_dir, output_file)
@@ -38,12 +37,13 @@ def write_file(output_file: str, lines: list):
         file.writelines(lines)
 
 
-def filter_fastq(seq: str, 
-                quality: int | float, 
-                gc_bounds: tuple[int | float] | float, 
-                length_bounds : tuple[int | float] | float, 
-                quality_threshold: int
-                ):
+def filter_fastq(
+    seq: str,
+    quality: int | float,
+    gc_bounds: tuple[int | float] | float,
+    length_bounds: tuple[int | float] | float,
+    quality_threshold: int,
+):
     gc_content = calculate_gc_content(seq)
     avg_quality = calculate_average_quality(quality)
 
@@ -56,5 +56,5 @@ def filter_fastq(seq: str,
         is_bounded(gc_bounds, gc_content)
         and is_bounded(length_bounds, len(seq))
         and avg_quality >= quality_threshold
-        ):
+    ):
         return True

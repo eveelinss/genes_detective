@@ -61,16 +61,15 @@ def complement(seq: str) -> str:
 
 
 def reverse_complement(seq: str) -> str:
-        seq = reverse(seq)
-        seq = complement(seq)
-        return seq
+    seq = reverse(seq)
+    seq = complement(seq)
+    return seq
 
 
 def transcribe(seq: str) -> str:
     if not check_rna(seq):
         return "".join(transcribe_dict[ch] for ch in seq)
-    return f"the sequence is rna"
-
+    return "the sequence is rna"
 
 
 def search_start_codon_in_rna(seq: str) -> int | str:

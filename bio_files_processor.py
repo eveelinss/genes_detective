@@ -3,18 +3,17 @@ Hi! The convert_multiline_fasta_to_oneline function connects broken sequences in
 The parse_blast_output function finds the best matches from the file for a certain sequence after the BLAST operation
 """
 
-
 import modules.filter
 
 
-def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str=None):
+def convert_multiline_fasta_to_oneline(input_fasta: str, output_fasta: str = None):
     """
     Function convert_multiline_fasta_to_oneline
 
     Args: input_fasta: str, output_fasta: str=None
 
-    This function receives a fasta file as input, in which the sequence of nucleic acid or protein is 
-    broken down and broken down sequentially on different lines. 
+    This function receives a fasta file as input, in which the sequence of nucleic acid or protein is
+    broken down and broken down sequentially on different lines.
     The function overwrites the data in the correct format in a new file
     """
     if output_fasta is None:
@@ -40,10 +39,10 @@ def parse_blast_output(input_file: str, output_file: str):
     Function parse_blast_output
 
     Args: input_file: str, output_file: str
-    
-    The parse_blast_output function receives the input path to the file 
+
+    The parse_blast_output function receives the input path to the file
     containing the result of the BLAST operation.
-    The function records the best matches from a file for a specific 
+    The function records the best matches from a file for a specific
     sequence in a new file in alphabetical order.
     """
     with open(input_file, "r") as infile:

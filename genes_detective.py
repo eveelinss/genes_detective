@@ -60,7 +60,7 @@ def filter_fastq(
     length_bounds: tuple | int, quality_threshold: int.
 
     The function takes the input_file string containing the path
-    to the source data file, filters the data and writes it to 
+    to the source data file, filters the data and writes it to
     a new file in the filtered folder
 
     The value is a tuple of two strings: consistency and quality.
@@ -78,5 +78,7 @@ def filter_fastq(
             seq = lines[1].rstrip()
             quality = lines[3].rstrip()
 
-            if modules.filter.filter_fastq(seq, quality, gc_bounds, length_bounds, quality_threshold):
+            if modules.filter.filter_fastq(
+                seq, quality, gc_bounds, length_bounds, quality_threshold
+            ):
                 modules.filter.write_file(output_file, lines)
